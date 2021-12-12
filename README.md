@@ -1,6 +1,7 @@
 # `JDK-1.8`源码阅读
 ## 集合框架
 ### `ArrayList`
+封装复杂操作，简化接口调用。
 ```test
 transient Object[] elementData; 
 private int size;
@@ -21,4 +22,9 @@ private void grow(int minCapacity) {
         // minCapacity is usually close to size, so this is a win:
         elementData = Arrays.copyOf(elementData, newCapacity);
 }
+```
+- 删除元素
+```text
+//将size-1,同时释放引用以便原对象能被垃圾收集器回收
+elementData[--size] = null; // clear to let GC do its work
 ```

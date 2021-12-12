@@ -228,7 +228,8 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     private static int calculateCapacity(Object[] elementData, int minCapacity) {
-        //当容量为空时，默认设置初始容量为10
+        //当容量为空时，默认设置初始容量为 10，传入的最小容量和默认容量的大小比较
+        //初始时，设置默认容量为10
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
             return Math.max(DEFAULT_CAPACITY, minCapacity);
         }
@@ -433,6 +434,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 根据下标获取元素
      * Returns the element at the specified position in this list.
      *
      * @param index index of the element to return
@@ -446,6 +448,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 往数组的某个下标设置元素
      * Replaces the element at the specified position in this list with
      * the specified element.
      *
@@ -494,6 +497,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 删除元素
      * Removes the element at the specified position in this list.
      * Shifts any subsequent elements to the left (subtracts one from their
      * indices).
@@ -506,12 +510,14 @@ public class ArrayList<E> extends AbstractList<E>
         rangeCheck(index);
 
         modCount++;
+        //获取到当前要删除的下标的元素
         E oldValue = elementData(index);
-
+        //需要移动的元素书数量，从后往前移动
         int numMoved = size - index - 1;
         if (numMoved > 0)
             System.arraycopy(elementData, index + 1, elementData, index,
                     numMoved);
+        //将size-1,同时释放引用以便原对象能被垃圾收集器回收
         elementData[--size] = null; // clear to let GC do its work
 
         return oldValue;
@@ -657,6 +663,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 数组下标检查
      * Checks if the given index is in range.  If not, throws an appropriate
      * runtime exception.  This method does *not* check if the index is
      * negative: It is always used immediately prior to an array access,
