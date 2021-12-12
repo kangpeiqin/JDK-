@@ -87,6 +87,7 @@ public class LinkedList<E>
     transient int size = 0;
 
     /**
+     * 首结点
      * Pointer to first node.
      * Invariant: (first == null && last == null) ||
      *            (first.prev == null && first.item != null)
@@ -94,6 +95,7 @@ public class LinkedList<E>
     transient Node<E> first;
 
     /**
+     * 尾结点
      * Pointer to last node.
      * Invariant: (first == null && last == null) ||
      *            (last.next == null && last.item != null)
@@ -139,6 +141,7 @@ public class LinkedList<E>
      */
     void linkLast(E e) {
         final Node<E> l = last;
+        //创建新的结点
         final Node<E> newNode = new Node<>(l, e, null);
         last = newNode;
         if (l == null)
@@ -967,6 +970,10 @@ public class LinkedList<E>
         }
     }
 
+    /**
+     * 静态内部类
+     * @param <E>
+     */
     private static class Node<E> {
         E item;
         Node<E> next;

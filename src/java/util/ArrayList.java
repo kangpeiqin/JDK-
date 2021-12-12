@@ -111,7 +111,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * 默认容量大小，常量，static 修饰：属于类，这个类的所有的对象共同持有
-     * Default initial capacity.
+     * Default initial capacity.只需要维持一份就够了，不需要每个对象都持有一份
      */
     private static final int DEFAULT_CAPACITY = 10;
 
@@ -285,6 +285,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 通过共有方法访问受保护成员
      * Returns the number of elements in this list.
      *
      * @return the number of elements in this list
@@ -336,6 +337,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 元素查找
      * Returns the index of the last occurrence of the specified element
      * in this list, or -1 if this list does not contain the element.
      * More formally, returns the highest index <tt>i</tt> such that
@@ -356,6 +358,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 列表的复制
      * Returns a shallow copy of this <tt>ArrayList</tt> instance.  (The
      * elements themselves are not copied.)
      *
@@ -392,6 +395,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     *
      * Returns an array containing all of the elements in this list in proper
      * sequence (from first to last element); the runtime type of the returned
      * array is that of the specified array.  If the list fits in the
@@ -524,6 +528,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 删除数组当中的某个对象
      * Removes the first occurrence of the specified element from this list,
      * if it is present.  If the list does not contain the element, it is
      * unchanged.  More formally, removes the element with the lowest index
@@ -567,6 +572,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     * 清空数组
      * Removes all of the elements from this list.  The list will
      * be empty after this call returns.
      */

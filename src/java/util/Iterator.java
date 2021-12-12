@@ -28,6 +28,7 @@ package java.util;
 import java.util.function.Consumer;
 
 /**
+ * 迭代器接口
  * An iterator over a collection.  {@code Iterator} takes the place of
  * {@link Enumeration} in the Java Collections Framework.  Iterators
  * differ from enumerations in two ways:
