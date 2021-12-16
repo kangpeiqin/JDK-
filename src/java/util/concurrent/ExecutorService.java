@@ -133,6 +133,7 @@ import java.util.Collection;
  *
  * @since 1.5
  * @author Doug Lea
+ * 执行服务接口
  */
 public interface ExecutorService extends Executor {
 

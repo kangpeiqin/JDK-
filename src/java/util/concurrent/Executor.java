@@ -124,6 +124,7 @@ package java.util.concurrent;
  *
  * @since 1.5
  * @author Doug Lea
+ * 执行任务接口
  */
 public interface Executor {
 

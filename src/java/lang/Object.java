@@ -295,6 +295,7 @@ public class Object {
     public final native void notifyAll();
 
     /**
+     * 线程等待
      * Causes the current thread to wait until either another thread invokes the
      * {@link java.lang.Object#notify()} method or the
      * {@link java.lang.Object#notifyAll()} method for this object, or a
