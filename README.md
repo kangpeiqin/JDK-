@@ -1,5 +1,5 @@
 # `JDK-1.8`源码阅读
-[String](#String) &nbsp; [Integer](#Integer) &nbsp;
+[String](#String) &nbsp; [Integer](#Integer) &nbsp;[StringBuilder](#StringBuilder)
 [ArrayList](#ArrayList) &nbsp;[LinkedList](#LinkedList) &nbsp; [HashMap](#HashMap)
 ## 总结
 > 封装复杂操作，简化接口调用。实现什么样的功能：数据结构(用什么结构存储数据(基本的数据类型)) + 一组操作
@@ -21,6 +21,15 @@ public String(String original) {
 - 常量字符串
 > String类型的对象，在内存中，它们被放在一个共享的地方：字符串常量池，
 它保存所有的常量字符串，每个常量只会保存一份，被所有使用者共享
+### `StringBuilder` & `StringBuffer`
+StringBuffer类是线程安全的，而StringBuilder类不是。
+> 没有采用 `final` 进行修饰，可以进行修改，同，字符数组中不一定所有位置都已经被使用。
+```text
+//The value is used for character storage.
+char[] value;
+// The count is the number of characters used.
+int count;
+```
 ### Integer
 > 缓存：IntegerCache
 ## 集合框架

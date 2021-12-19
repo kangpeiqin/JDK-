@@ -100,6 +100,7 @@ import java.util.Arrays;
 {
 
     /**
+     * 缓存
      * A cache of the last value returned by toString. Cleared
      * whenever the StringBuffer is modified.
      */
@@ -312,6 +313,7 @@ import java.util.Arrays;
     }
 
     /**
+     * 加锁操作，不同的线程调用到此方法会被同步，变成顺序执行
      * Appends the specified {@code CharSequence} to this
      * sequence.
      * <p>

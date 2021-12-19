@@ -46,6 +46,7 @@ import java.util.Arrays;
  */
 abstract class AbstractStringBuilder implements Appendable, CharSequence {
     /**
+     * 实例变量，每个实例当中都会有一份
      * The value is used for character storage.
      */
     char[] value;
