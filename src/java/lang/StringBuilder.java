@@ -82,6 +82,7 @@ public final class StringBuilder
     static final long serialVersionUID = 4383685877147921099L;
 
     /**
+     * 默认大构造方法，调用父类的构造函数
      * Constructs a string builder with no characters in it and an
      * initial capacity of 16 characters.
      */
