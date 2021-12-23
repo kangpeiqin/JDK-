@@ -34,6 +34,7 @@
  */
 
 package java.util.concurrent.atomic;
+
 import sun.misc.Unsafe;
 
 /**
@@ -44,20 +45,23 @@ import sun.misc.Unsafe;
  * updated flags, and cannot be used as a replacement for a
  * {@link java.lang.Boolean}.
  *
- * @since 1.5
  * @author Doug Lea
+ * 原子类
+ * @since 1.5
  */
 public class AtomicBoolean implements java.io.Serializable {
     private static final long serialVersionUID = 4654671469794556979L;
-    // setup to use Unsafe.compareAndSwapInt for updates
+    // setup to use Unsafe.compareAndSwapInt for updates 使用Unsafe
     private static final Unsafe unsafe = Unsafe.getUnsafe();
     private static final long valueOffset;
-
+    //static代码块，在类加载时被执行
     static {
         try {
             valueOffset = unsafe.objectFieldOffset
-                (AtomicBoolean.class.getDeclaredField("value"));
-        } catch (Exception ex) { throw new Error(ex); }
+                    (AtomicBoolean.class.getDeclaredField("value"));
+        } catch (Exception ex) {
+            throw new Error(ex);
+        }
     }
 
     private volatile int value;
@@ -155,6 +159,7 @@ public class AtomicBoolean implements java.io.Serializable {
 
     /**
      * Returns the String representation of the current value.
+     *
      * @return the String representation of the current value
      */
     public String toString() {
