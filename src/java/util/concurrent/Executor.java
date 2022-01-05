@@ -36,6 +36,7 @@
 package java.util.concurrent;
 
 /**
+ * 执行提交的任务，任务的提交和执行分离机制
  * An object that executes submitted {@link Runnable} tasks. This
  * interface provides a way of decoupling task submission from the
  * mechanics of how each task will be run, including details of thread
