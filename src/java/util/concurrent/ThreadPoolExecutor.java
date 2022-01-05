@@ -323,9 +323,12 @@ import java.util.*;
  */
 public class ThreadPoolExecutor extends AbstractExecutorService {
     /**
+     * 线程池状态：ctl
      * The main pool control state, ctl, is an atomic integer packing
      * two conceptual fields
+     * 活跃的线程数
      * workerCount, indicating the effective number of threads
+     * 运行状态
      * runState,    indicating whether running, shutting down etc
      * <p>
      * In order to pack them into one int, we limit workerCount to
@@ -504,6 +507,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      */
 
     /**
+     * 线程池工厂，所有的线程都是有这个工厂创建
      * Factory for new threads. All threads are created using this
      * factory (via method addWorker).  All callers must be prepared
      * for addWorker to fail, which may reflect a system or user's
@@ -633,6 +637,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         Worker(Runnable firstTask) {
             setState(-1); // inhibit interrupts until runWorker
             this.firstTask = firstTask;
+            //获取线程池工厂并创建新的线程
             this.thread = getThreadFactory().newThread(this);
         }
 
@@ -1359,6 +1364,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     }
 
     /**
+     * 线程池处理任务的主要流程
      * Executes the given task sometime in the future.  The task
      * may execute in a new thread or in an existing pooled thread.
      * <p>
@@ -1377,7 +1383,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             throw new NullPointerException();
         /*
          * Proceed in 3 steps:
-         *
+         * 当前线程数少于核心线程数，尝试创建一个新的线程
          * 1. If fewer than corePoolSize threads are running, try to
          * start a new thread with the given command as its first
          * task.  The call to addWorker atomically checks runState and
@@ -1396,6 +1402,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
          * and so reject the task.
          */
         int c = ctl.get();
+        //当前线程数<核心线程数：创建新的线程
         if (workerCountOf(c) < corePoolSize) {
             if (addWorker(command, true))
                 return;

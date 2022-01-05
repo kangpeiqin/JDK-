@@ -86,6 +86,7 @@ public class Executors {
      * @param nThreads the number of threads in the pool
      * @return the newly created thread pool
      * @throws IllegalArgumentException if {@code nThreads <= 0}
+     *                                  创建一个固定线程数量的线程池
      */
     public static ExecutorService newFixedThreadPool(int nThreads) {
         return new ThreadPoolExecutor(nThreads, nThreads,
@@ -169,6 +170,7 @@ public class Executors {
      * guaranteed not to be reconfigurable to use additional threads.
      *
      * @return the newly created single-threaded Executor
+     * 创建一个单线程线程池
      */
     public static ExecutorService newSingleThreadExecutor() {
         return new FinalizableDelegatedExecutorService
@@ -199,6 +201,8 @@ public class Executors {
     }
 
     /**
+     * 当需要时才创建新的线程，会对之前创建的线程进行复用，当有很多短暂的异步任务，
+     * 使用 newCachedThreadPool 将会极大的改善程序的性能
      * Creates a thread pool that creates new threads as needed, but
      * will reuse previously constructed threads when they are
      * available.  These pools will typically improve the performance

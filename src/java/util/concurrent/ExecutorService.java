@@ -214,6 +214,7 @@ public interface ExecutorService extends Executor {
             throws InterruptedException;
 
     /**
+     * 带有返回值的任务提交
      * Submits a value-returning task for execution and returns a
      * Future representing the pending results of the task. The
      * Future's {@code get} method will return the task's result upon
