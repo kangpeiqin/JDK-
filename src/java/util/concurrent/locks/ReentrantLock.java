@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.Collection;
 
 /**
+ * 可重入锁
  * A reentrant mutual exclusion {@link Lock} with the same basic
  * behavior and semantics as the implicit monitor lock accessed using
  * {@code synchronized} methods and statements, but with extended
@@ -112,6 +113,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     private final Sync sync;
 
     /**
+     * 静态内部抽象类
      * Base of synchronization control for this lock. Subclassed
      * into fair and nonfair versions below. Uses AQS state to
      * represent the number of holds on the lock.
@@ -195,12 +197,14 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     }
 
     /**
+     * 非公平锁
      * Sync object for non-fair locks
      */
     static final class NonfairSync extends Sync {
         private static final long serialVersionUID = 7316153563782823691L;
 
         /**
+         * 使用final进行修饰，不能被重写
          * Performs lock.  Try immediate barge, backing up to normal
          * acquire on failure.
          */
@@ -252,6 +256,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     }
 
     /**
+     * 默认使用非公平锁
      * Creates an instance of {@code ReentrantLock}.
      * This is equivalent to using {@code ReentrantLock(false)}.
      */
@@ -270,6 +275,8 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     }
 
     /**
+     * 获取锁，如果锁没有被没有被其他线程持有，则立即返回，设置当前线程持有锁
+     * 如果当前线程已经持有锁，则持有该锁的数量加1
      * Acquires the lock.
      *
      * <p>Acquires the lock if it is not held by another thread and returns

@@ -383,25 +383,58 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * below).
      */
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
+    /**
+     * 前3位表示线程池的状态，表示状态位与线程数位的分界值，实际用于状态变量等移位操作
+     */
     private static final int COUNT_BITS = Integer.SIZE - 3;
+    /**
+     * 最大容量，活跃线程数
+     */
     private static final int CAPACITY = (1 << COUNT_BITS) - 1;
 
-    // runState is stored in the high-order bits
+    // runState is stored in the high-order bits 线程池状态，用高位进行存储
+    /**
+     * -1 << 29  111 0000....000
+     */
     private static final int RUNNING = -1 << COUNT_BITS;
+    /**
+     * 关闭
+     */
     private static final int SHUTDOWN = 0 << COUNT_BITS;
     private static final int STOP = 1 << COUNT_BITS;
     private static final int TIDYING = 2 << COUNT_BITS;
     private static final int TERMINATED = 3 << COUNT_BITS;
 
+    /**
+     * 用于获取线程池状态
+     * 位运算
+     *
+     * @param c
+     * @return
+     */
     // Packing and unpacking ctl
     private static int runStateOf(int c) {
         return c & ~CAPACITY;
     }
 
+    /**
+     * 获取活跃线程数
+     *
+     * @param c
+     * @return
+     */
     private static int workerCountOf(int c) {
         return c & CAPACITY;
     }
 
+    /**
+     * 线程池状态 （rs） 以及 活跃线程数（wc）
+     * 亦或 线程池运行状态+活跃线程池数
+     *
+     * @param rs runState
+     * @param wc workerCount
+     * @return
+     */
     private static int ctlOf(int rs, int wc) {
         return rs | wc;
     }
@@ -424,6 +457,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     }
 
     /**
+     * 工作线程数+1 采用CAS尝试更新
      * Attempts to CAS-increment the workerCount field of ctl.
      */
     private boolean compareAndIncrementWorkerCount(int expect) {
@@ -618,10 +652,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
         /**
          * Thread this worker is running in.  Null if factory fails.
+         * 工作线程
          */
         final Thread thread;
         /**
          * Initial task to run.  Possibly null.
+         * 提交的执行任务
          */
         Runnable firstTask;
         /**
@@ -934,8 +970,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      */
     private boolean addWorker(Runnable firstTask, boolean core) {
         retry:
+        // 死循环执行逻辑。确保多线程环境下在预期条件下退出循环。
         for (; ; ) {
             int c = ctl.get();
+            //获取线程池状态 runState
             int rs = runStateOf(c);
 
             // Check if queue empty only if necessary.
@@ -988,6 +1026,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                     mainLock.unlock();
                 }
                 if (workerAdded) {
+                    //线程调度
                     t.start();
                     workerStarted = true;
                 }
@@ -1401,8 +1440,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
          * thread.  If it fails, we know we are shut down or saturated
          * and so reject the task.
          */
+        //获取线程池状态：原子操作
         int c = ctl.get();
-        //当前线程数<核心线程数：创建新的线程
+        //当前工作线程数<核心线程数：创建新的线程
         if (workerCountOf(c) < corePoolSize) {
             if (addWorker(command, true))
                 return;

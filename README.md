@@ -91,8 +91,8 @@ LinkedList的实现中，队列长度没有限制，但别的Queue的实现可�
 ```
 - 使用`synchronized`的缺点
 > 成本较高，需要先获取锁，最后需要释放锁，获取不到锁还需要等待，会有线程的上下文切换。
-- `CAS` 和 `ABA` 问题
-
+- [CAS(Compare And Swap)](https://www.jianshu.com/p/ae25eb3cfb5d)和ABA问题
+> CAS机制当中使用了3个基本操作数：内存地址V，旧的预期值A，要修改的新值B。
 ### 线程池
 ![UML类图](https://i.bmp.ovh/imgs/2022/01/8e5743583c4ddeff.png)
 - `Executor` & `ExecutorService`
@@ -102,10 +102,18 @@ LinkedList的实现中，队列长度没有限制，但别的Queue的实现可�
 > - newFixedThreadPool: 创建一个固定线程数量的线程池
 > - newSingleThreadExecutor: 创建一个单线程线程池
 > - newCachedThreadPool: 当需要时才创建新的线程，会对之前创建的线程进行复用，当有很多短暂的异步任务，使用 newCachedThreadPool 将会极大的改善程序的性能
-### AQS(抽象队列同步器)
+### [AQS(抽象队列同步器)](http://concurrent.redspider.group/article/02/11.html)
+- 作用：用来构建锁和同步器的框架(ReentrantLock、FutureTask都是基于此)
 > * 抽象：抽象类，只实现一些主要逻辑，有些方法由子类实现；
 > * 队列：使用先进先出（FIFO）队列存储数据；
 > * 同步：实现了同步的功能。
+#### 数据结构
+```
+                            state(资源)
+          +------+  prev +-----+       +-----+
+      head |      | <---- |     | <---- |     |  tail
+           +------+       +-----+       +-----+
+```
 #### 资源的共享模式
 - 独占模式
 > 资源是独占的，一次只能一个线程获取。如`ReentrantLock`。

@@ -173,14 +173,17 @@ public abstract class AbstractQueuedLongSynchronizer
 
         /**
          * waitStatus value to indicate thread has cancelled
+         * waitStatus的值，表示该结点（对应的线程）已被取消
          */
         static final int CANCELLED = 1;
         /**
          * waitStatus value to indicate successor's thread needs unparking
+         * 表示后继结点（对应的线程）需要被唤醒
          */
         static final int SIGNAL = -1;
         /**
          * waitStatus value to indicate thread is waiting on condition
+         * 表示该结点（对应的线程）在等待某一条件
          */
         static final int CONDITION = -2;
         /**
@@ -309,6 +312,7 @@ public abstract class AbstractQueuedLongSynchronizer
     }
 
     /**
+     * 双指针：头节点和尾部结点
      * 头节点，内存可见性保证
      * Head of the wait queue, lazily initialized.  Except for
      * initialization, it is modified only via method setHead.  Note:
@@ -320,7 +324,7 @@ public abstract class AbstractQueuedLongSynchronizer
     /**
      * 尾结点
      * Tail of the wait queue, lazily initialized.  Modified only via
-     * method enq to add new wait node.
+     * method enq to add new wait  node.
      */
     private transient volatile Node tail;
 
@@ -352,6 +356,7 @@ public abstract class AbstractQueuedLongSynchronizer
     }
 
     /**
+     * 使用CAS自旋进行更新
      * Atomically sets synchronization state to the given updated
      * value if the current state value equals the expected value.
      * This operation has memory semantics of a {@code volatile} read
@@ -377,6 +382,7 @@ public abstract class AbstractQueuedLongSynchronizer
     static final long spinForTimeoutThreshold = 1000L;
 
     /**
+     * 结点入队，将结点加入链表中
      * Inserts node into queue, initializing if necessary. See picture above.
      *
      * @param node the node to insert
@@ -399,12 +405,14 @@ public abstract class AbstractQueuedLongSynchronizer
     }
 
     /**
+     * 结点入队
      * Creates and enqueues node for current thread and given mode.
      *
      * @param mode Node.EXCLUSIVE for exclusive, Node.SHARED for shared
      * @return the new node
      */
     private Node addWaiter(Node mode) {
+        //创建结点
         Node node = new Node(Thread.currentThread(), mode);
         // Try the fast path of enq; backup to full enq on failure
         Node pred = tail;
@@ -987,6 +995,7 @@ public abstract class AbstractQueuedLongSynchronizer
     }
 
     /**
+     * 获取资源
      * Acquires in exclusive mode, ignoring interrupts.  Implemented
      * by invoking at least once {@link #tryAcquire},
      * returning on success.  Otherwise the thread is queued, possibly

@@ -710,6 +710,7 @@ public class ReentrantReadWriteLock
     }
 
     /**
+     * 公平锁
      * Fair version of Sync
      */
     static final class FairSync extends Sync {
@@ -725,7 +726,7 @@ public class ReentrantReadWriteLock
     }
 
     /**
-     * 静态内部类：写锁
+     * 静态内部类：读锁
      * The lock returned by method {@link ReentrantReadWriteLock#readLock}.
      */
     public static class ReadLock implements Lock, java.io.Serializable {
