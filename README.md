@@ -66,8 +66,7 @@ elementData[--size] = null; // clear to let GC do its work
 - 数组的拷贝
 ```text
 //native 方法
-System.arraycopy(elementData, index + 1, elementData, index,
-                    numMoved);
+System.arraycopy(elementData, index + 1, elementData, index,numMoved);
 ```
 ### LinkedList
 `ArrayList`随机访问效率很高，但插入和删除性能比较低，`LinkedList`正好相反
@@ -76,11 +75,12 @@ System.arraycopy(elementData, index + 1, elementData, index,
 > 区别在于，对于特殊情况的处理不同。特殊情况是指队列为空或者队列为满(指队列有长度大小限制，而且已经占满了)。
 LinkedList的实现中，队列长度没有限制，但别的Queue的实现可能有。在队列为空时，element和remove会抛出异常NoSuchElementException，而peek和poll返回特殊值null；在队列为满时，add会抛出异常IllegalStateException，而offer只是返回false
 ### HashMap
+- 存储结构
+> 数组+链表+红黑树
+- 元素要存入数组当中的哪个位置(哈希)？如果该位置有元素了(哈希冲突)，应该如何处理(连地址法)？
+> 直接利用哈希算法定位到存储的位置。
 ## 多线程
 > 主要位于`util.concurrent`包中
-### `Thread`
-### `ThreadLocal`
-
 ### 原子类
 保证原子更新操作，一个操作不可被中断。如：i作为某对象的成员变量，`i++`这个操作不是原子操作，
 它分为三个步骤：
@@ -102,6 +102,7 @@ LinkedList的实现中，队列长度没有限制，但别的Queue的实现可�
 > - newFixedThreadPool: 创建一个固定线程数量的线程池
 > - newSingleThreadExecutor: 创建一个单线程线程池
 > - newCachedThreadPool: 当需要时才创建新的线程，会对之前创建的线程进行复用，当有很多短暂的异步任务，使用 newCachedThreadPool 将会极大的改善程序的性能
+
 ### [AQS(抽象队列同步器)](http://concurrent.redspider.group/article/02/11.html)
 - 作用：用来构建锁和同步器的框架(ReentrantLock、FutureTask都是基于此)
 > * 抽象：抽象类，只实现一些主要逻辑，有些方法由子类实现；

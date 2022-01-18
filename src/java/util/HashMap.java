@@ -639,6 +639,7 @@ public class HashMap<K, V> extends AbstractMap<K, V>
      */
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
+        //哈希桶数组
         Node<K, V>[] tab;
         Node<K, V> p;
         int n, i;
@@ -684,6 +685,7 @@ public class HashMap<K, V> extends AbstractMap<K, V>
     }
 
     /**
+     * 扩容
      * Initializes or doubles table size.  If null, allocates in
      * accord with initial capacity target held in field threshold.
      * Otherwise, because we are using power-of-two expansion, the
@@ -716,6 +718,7 @@ public class HashMap<K, V> extends AbstractMap<K, V>
                     (int) ft : Integer.MAX_VALUE);
         }
         threshold = newThr;
+        //创建哈希桶数组
         @SuppressWarnings({"rawtypes", "unchecked"})
         Node<K, V>[] newTab = (Node<K, V>[]) new Node[newCap];
         table = newTab;

@@ -162,7 +162,7 @@ public class ThreadLocal<T> {
         //获取当前执行的线程对象
         Thread t = Thread.currentThread();
         ThreadLocalMap map = getMap(t);
-        //如果当前线程的不为空
+        //如果当前线程的ThreadLocalMap不为空
         if (map != null) {
             //根据键获取 Entry <key,value>对象
             ThreadLocalMap.Entry e = map.getEntry(this);

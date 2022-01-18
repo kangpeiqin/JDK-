@@ -640,6 +640,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * the thread actually starts running tasks, we initialize lock
      * state to a negative value, and clear it upon start (in
      * runWorker).
+     * 是一个线程任务，继承了AQS抽象类
      */
     private final class Worker
             extends AbstractQueuedSynchronizer
@@ -1001,10 +1002,13 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         boolean workerAdded = false;
         Worker w = null;
         try {
+            //创建 worker 对象
             w = new Worker(firstTask);
+            //实例化一个 Thread 对象
             final Thread t = w.thread;
             if (t != null) {
                 final ReentrantLock mainLock = this.mainLock;
+                //获取锁
                 mainLock.lock();
                 try {
                     // Recheck while holding lock.
@@ -1016,6 +1020,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                             (rs == SHUTDOWN && firstTask == null)) {
                         if (t.isAlive()) // precheck that t is startable
                             throw new IllegalThreadStateException();
+                        //核心线程缓存
                         workers.add(w);
                         int s = workers.size();
                         if (s > largestPoolSize)
@@ -1026,7 +1031,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                     mainLock.unlock();
                 }
                 if (workerAdded) {
-                    //线程调度
+                    //启动线程
                     t.start();
                     workerStarted = true;
                 }
@@ -1142,6 +1147,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             }
 
             try {
+                //从任务队列当中获取任务
                 Runnable r = timed ?
                         workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
                         workQueue.take();
@@ -1198,7 +1204,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * @param w the worker
      */
     final void runWorker(Worker w) {
+        //获取当前执行线程
         Thread wt = Thread.currentThread();
+        //获取执行任务
         Runnable task = w.firstTask;
         w.firstTask = null;
         w.unlock(); // allow interrupts
@@ -1219,6 +1227,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                     beforeExecute(wt, task);
                     Throwable thrown = null;
                     try {
+                        //任务直接执行，run() 方法交由某个线程进行执行
                         task.run();
                     } catch (RuntimeException x) {
                         thrown = x;
