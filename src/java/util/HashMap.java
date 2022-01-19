@@ -312,6 +312,12 @@ public class HashMap<K, V> extends AbstractMap<K, V>
             return oldValue;
         }
 
+        /**
+         * 重写 equals 方法
+         *
+         * @param o
+         * @return
+         */
         public final boolean equals(Object o) {
             if (o == this)
                 return true;

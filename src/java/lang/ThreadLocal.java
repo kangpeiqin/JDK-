@@ -137,6 +137,7 @@ public class ThreadLocal<T> {
      * @return a new thread local variable
      * @throws NullPointerException if the specified supplier is null
      * @since 1.8
+     * 构造方法：设置初始值
      */
     public static <S> ThreadLocal<S> withInitial(Supplier<? extends S> supplier) {
         return new SuppliedThreadLocal<>(supplier);
@@ -283,6 +284,11 @@ public class ThreadLocal<T> {
 
         private final Supplier<? extends T> supplier;
 
+        /**
+         * 传入函数：函数式编程
+         *
+         * @param supplier
+         */
         SuppliedThreadLocal(Supplier<? extends T> supplier) {
             this.supplier = Objects.requireNonNull(supplier);
         }
@@ -294,6 +300,7 @@ public class ThreadLocal<T> {
     }
 
     /**
+     * 静态内部类
      * ThreadLocalMap is a customized hash map suitable only for
      * maintaining thread local values. No operations are exported
      * outside of the ThreadLocal class. The class is package private to
@@ -333,6 +340,7 @@ public class ThreadLocal<T> {
         private static final int INITIAL_CAPACITY = 16;
 
         /**
+         * 哈希桶数组
          * The table, resized as necessary.
          * table.length MUST always be a power of two.
          */
@@ -375,8 +383,9 @@ public class ThreadLocal<T> {
          * one when we have at least one entry to put in it.
          */
         ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {
-            //哈希表的默认大小为16，一个线程操作多个 ThreadLocal 的情况
+            //哈希表的默认大小为16，一个线程操作多个 ThreadLocal 的情况，初始化
             table = new Entry[INITIAL_CAPACITY];
+            //在哈希数组当中的位置
             int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);
             table[i] = new Entry(firstKey, firstValue);
             size = 1;
@@ -474,11 +483,13 @@ public class ThreadLocal<T> {
 
             Entry[] tab = table;
             int len = tab.length;
+            //哈希算法：快速获取到key在哈希桶数组的位置
             int i = key.threadLocalHashCode & (len - 1);
-
+            // 如果tab[i] != null 说明这个位置有值，即引起哈希冲突
             for (Entry e = tab[i];
                  e != null;
                  e = tab[i = nextIndex(i, len)]) {
+                //获取 key
                 ThreadLocal<?> k = e.get();
 
                 if (k == key) {
@@ -491,9 +502,10 @@ public class ThreadLocal<T> {
                     return;
                 }
             }
-
+            //将数据加入到哈希表当中
             tab[i] = new Entry(key, value);
             int sz = ++size;
+            //扩容
             if (!cleanSomeSlots(i, sz) && sz >= threshold)
                 rehash();
         }

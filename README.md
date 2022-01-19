@@ -75,12 +75,75 @@ System.arraycopy(elementData, index + 1, elementData, index,numMoved);
 > 区别在于，对于特殊情况的处理不同。特殊情况是指队列为空或者队列为满(指队列有长度大小限制，而且已经占满了)。
 LinkedList的实现中，队列长度没有限制，但别的Queue的实现可能有。在队列为空时，element和remove会抛出异常NoSuchElementException，而peek和poll返回特殊值null；在队列为满时，add会抛出异常IllegalStateException，而offer只是返回false
 ### HashMap
+- 作用
+> 存储键值对，可以根据键快速的找到值，而不用去遍历整理存储空间。
 - 存储结构
 > 数组+链表+红黑树
-- 元素要存入数组当中的哪个位置(哈希)？如果该位置有元素了(哈希冲突)，应该如何处理(连地址法)？
+- 元素要存入数组当中的哪个位置(哈希算法)？如果该位置有元素了(哈希冲突)，应该如何处理(链地址法)？
 > 直接利用哈希算法定位到存储的位置。
+- 整体的流程
 ## 多线程
 > 主要位于`util.concurrent`包中
+### ConcurrentHashMap
+### ThreadLocal
+> 作用：提供线程级别变量，变量只对当前线程可见。
+
+![](https://i.bmp.ovh/imgs/2022/01/795d06a07106f8fe.png)
+- 线程如何维护属于自己的变量副本？
+> 每个线程当中都维护了一个成员变量:`ThreadLocal.ThreadLocalMap threadLocals`(线程本地变量)，
+> 操作ThreadLocal对象时，实际上会去获取当前操作线程内部的ThreadLocalMap变量，对当前线程持有的变量进行操作。
+```text
+Thread类当中：ThreadLocal.ThreadLocalMap threadLocals = null;
+ThreadLocalMap: 本质上也是一个存储K,V的数据结构，key是当前的ThreadLocal对象，value是我们外部传入的值
+往 Map 当中设置值：
+    public void set(T value) {
+        //获取当前的执行线程
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        if (map != null)
+            map.set(this, value);
+        else
+            createMap(t, value); //为当前线程创建一个`ThreadLocalMap`对象
+    }
+    ThreadLocalMap getMap(Thread t) {
+         //获取线程的 ThreadLocal 成员变量对象
+         return t.threadLocals;
+    }
+    void createMap(Thread t, T firstValue) {
+         //创建 ThreadLocalMap 对象
+         t.threadLocals = new ThreadLocalMap(this, firstValue);
+    }
+    ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {
+         //哈希表的默认大小为16，一个线程操作多个 ThreadLocal 的情况，初始化
+         table = new Entry[INITIAL_CAPACITY];
+         //哈希算法：根据key计算数据应该存在应该在哈希桶数组的哪个位置
+         int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);
+         table[i] = new Entry(firstKey, firstValue);
+         size = 1;
+         setThreshold(INITIAL_CAPACITY);
+    }
+ //根据当前的ThreadLocal对象(key)获取数据
+ public T get() {
+        //获取当前执行的线程对象
+        Thread t = Thread.currentThread();
+        //获取 ThreadLocalMap 对象
+        ThreadLocalMap map = getMap(t);
+        //如果当前线程的ThreadLocalMap不为空
+        if (map != null) {
+            //根据键获取 Entry <key,value>对象
+            ThreadLocalMap.Entry e = map.getEntry(this);
+            if (e != null) {
+                @SuppressWarnings("unchecked")
+                T result = (T) e.value;
+                return result;
+            }
+        }
+        //返回初始值
+        return setInitialValue();
+ }
+```
+
+
 ### 原子类
 保证原子更新操作，一个操作不可被中断。如：i作为某对象的成员变量，`i++`这个操作不是原子操作，
 它分为三个步骤：
