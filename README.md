@@ -142,8 +142,9 @@ ThreadLocalMap: 本质上也是一个存储K,V的数据结构，key是当前的T
         return setInitialValue();
  }
 ```
-
-
+### `ReentrantLock` 实现原理
+#### `LockSupport`
+> `park`使得当前线程放弃`CPU`，进入等待状态（WAITING），操作系统不再对它进行调度，直到有其他线程对它调用了`unpark`, `unpark`使参数指定的线程恢复可运行状态
 ### 原子类
 保证原子更新操作，一个操作不可被中断。如：i作为某对象的成员变量，`i++`这个操作不是原子操作，
 它分为三个步骤：
