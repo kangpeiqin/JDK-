@@ -237,6 +237,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         protected final boolean tryAcquire(int acquires) {
             //获取当前的线程
             final Thread current = Thread.currentThread();
+            //获取当前资源状态
             int c = getState();
             if (c == 0) {
                 if (!hasQueuedPredecessors() &&

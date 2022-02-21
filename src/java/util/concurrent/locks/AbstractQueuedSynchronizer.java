@@ -1088,6 +1088,7 @@ public abstract class AbstractQueuedSynchronizer
     // Main exported methods
 
     /**
+     * 尝试获取资源
      * Attempts to acquire in exclusive mode. This method should query
      * if the state of the object permits it to be acquired in the
      * exclusive mode, and if so to acquire it.

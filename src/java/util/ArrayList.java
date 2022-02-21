@@ -154,7 +154,7 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public ArrayList(int initialCapacity) {
         if (initialCapacity > 0) {
-            //初始化数组，刚开始容量为10
+            //初始化数组容量
             this.elementData = new Object[initialCapacity];
         } else if (initialCapacity == 0) {
             this.elementData = EMPTY_ELEMENTDATA;
@@ -181,10 +181,13 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public ArrayList(Collection<? extends E> c) {
         Object[] a = c.toArray();
+        //如果传入的集合不为空
         if ((size = a.length) != 0) {
+            //如果传入的集合是 ArrayList 类型
             if (c.getClass() == ArrayList.class) {
                 elementData = a;
             } else {
+                //数组复制
                 elementData = Arrays.copyOf(a, size, Object[].class);
             }
         } else {
@@ -243,7 +246,7 @@ public class ArrayList<E> extends AbstractList<E>
     private void ensureExplicitCapacity(int minCapacity) {
         modCount++;
 
-        // overflow-conscious code
+        // overflow-conscious code，空间不够，则进行扩容
         if (minCapacity - elementData.length > 0)
             grow(minCapacity);
     }
@@ -257,7 +260,7 @@ public class ArrayList<E> extends AbstractList<E>
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     /**
-     * 数组扩容
+     * 数组扩容: 扩容为原来的1.5倍
      * Increases the capacity to ensure that it can hold at least the
      * number of elements specified by the minimum capacity argument.
      *
@@ -358,7 +361,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
-     * 列表的复制
+     * 列表的复制，指向不同的对象
      * Returns a shallow copy of this <tt>ArrayList</tt> instance.  (The
      * elements themselves are not copied.)
      *
